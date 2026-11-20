@@ -88,7 +88,7 @@
 <body>
   <header>
     <h1>Media<span>Tok</span> Quiz</h1>
-    <p>Which anime &amp; manga are the greatest media of all time? Test your knowledge.</p>
+    <p>Crying guy, Griffith, DIO and friends. How cooked is your brain from MediaTok?</p>
   </header>
 
   <main class="card">
@@ -114,99 +114,110 @@
 
   <script>
     const QUESTIONS_PER_ROUND = 10;
+    const questions = [];
     const pool = [
       {
-        question: "Who is the flute-wielding young magi protagonist of Magi: The Labyrinth of Magic?",
-        options: ["Alibaba Saluja", "Aladdin", "Judar", "Sinbad", "Hakuryuu"],
-        answer: 1
+        question: "Who is the guy crying, screaming and bleeding in roughly 90% of MediaTok edits?",
+        options: ["Rudeus Greyrat", "Subaru Natsuki", "Kazuma Satou", "Naofumi Iwatani", "Light Yagami"],
+        answer: 1,
+        joke: "Subaru Natsuki, certified crying guy. He has died more times than your phone battery."
       },
       {
-        question: "Who wrote and illustrated the manga Magi: The Labyrinth of Magic?",
-        options: ["Shinobu Ohtaka", "Tappei Nagatsuki", "Hiro Mashima", "Rifujin na Magonote"],
-        answer: 0
+        question: "Subaru's superpower in Re:Zero is basically save-scumming with extra pain. What is it called?",
+        options: ["Geass", "Return by Death", "Time Stop", "Nen"],
+        answer: 1,
+        joke: "Return by Death: respawn, but with trauma."
       },
       {
-        question: "What is the name of the protagonist of Mushoku Tensei: Jobless Reincarnation?",
-        options: ["Subaru Natsuki", "Rudeus Greyrat", "Kazuma Satou", "Eren Yeager", "Orsted"],
-        answer: 1
+        question: "Which silver-haired half-elf does Subaru fall for in Re:Zero?",
+        options: ["Rem", "Beatrice", "Emilia", "Priscilla"],
+        answer: 2,
+        joke: "Emilia-tan. Yes, the Rem fans are typing angrily right now."
       },
       {
-        question: "Who is Rudeus's first magic teacher in Mushoku Tensei?",
-        options: ["Eris", "Sylphiette", "Roxy Migurdia", "Ghislaine"],
-        answer: 2
+        question: "What was Rudeus Greyrat doing before getting reincarnated in Mushoku Tensei?",
+        options: ["Being a 34-year-old NEET", "Being a hero", "Being a chef", "Being a prince"],
+        answer: 0,
+        joke: "Jobless Reincarnation. The title was not lying."
       },
       {
-        question: "What is Subaru Natsuki's special ability in Re:Zero?",
-        options: ["Geass", "Time Stop", "Return by Death", "Nen", "Haki"],
-        answer: 2
+        question: "Who is Rudeus's blue-haired, hat-wearing first magic teacher?",
+        options: ["Eris", "Sylphiette", "Ghislaine", "Roxy Migurdia"],
+        answer: 3,
+        joke: "Roxy: the reason half of Mushoku Tensei fans have a new profile picture."
       },
       {
-        question: "Which silver-haired half-elf does Subaru meet when he is summoned to another world in Re:Zero?",
-        options: ["Rem", "Emilia", "Beatrice", "Priscilla"],
-        answer: 1
-      }
-    ];
-
-    const questions = [];
-
-    const baseQuestions = [
-      {
-        question: "Who created the dark fantasy manga Berserk?",
-        options: ["Hirohiko Araki", "Kentaro Miura", "Makoto Yukimura", "Eiichiro Oda"],
-        answer: 1
+        question: "Aladdin from Magi carries a flute and talks to a giant genie living in his bottle. What is the genie's name?",
+        options: ["Ifrit", "Ugo", "Baal", "Amon"],
+        answer: 1,
+        joke: "Ugo! The big blue genie in the bottle. Unfortunately the bottle does not grant wishes."
       },
       {
-        question: "What is the name of Guts's giant sword in Berserk?",
-        options: ["Excalibur", "Masamune", "Zanpakuto", "Dragonslayer", "Muramasa"],
-        answer: 3
+        question: "Which country does Sinbad rule in Magi?",
+        options: ["Kou Empire", "Balbadd", "Sindria", "Reim"],
+        answer: 2,
+        joke: "Sindria: Sinbad, but make it a nation."
       },
       {
-        question: "Who is the author of JoJo's Bizarre Adventure?",
-        options: ["Hirohiko Araki", "Naoki Urasawa", "Tite Kubo", "Kentaro Miura"],
-        answer: 0
+        question: "\"It was too big to be called a sword. It was more like a heap of raw iron.\" Which sword is this?",
+        options: ["Excalibur", "Zanpakuto", "Masamune", "Dragonslayer"],
+        answer: 3,
+        joke: "Guts's Dragonslayer. Compensating for something? No, just fighting demons."
       },
       {
-        question: "Which JoJo villain wields the Stand \"The World\"?",
-        options: ["Kira Yoshikage", "Kars", "Diavolo", "DIO", "Pucci"],
-        answer: 3
+        question: "Which Berserk character is responsible for the most infamous betrayal on MediaTok?",
+        options: ["Casca", "Puck", "Griffith", "Judeau", "Zodd"],
+        answer: 2,
+        joke: "Griffith. Whoever says 'he did nothing wrong' gets blocked immediately."
       },
       {
-        question: "Who is the main protagonist of Vinland Saga?",
-        options: ["Askeladd", "Canute", "Thorfinn", "Thorkell"],
-        answer: 2
+        question: "Which JoJo villain screams \"WRYYYYY!\" and \"ZA WARUDO!\"?",
+        options: ["Kars", "Kira Yoshikage", "DIO", "Diavolo", "Pucci"],
+        answer: 2,
+        joke: "DIO. Yes, he did throw a road roller at you. No, you cannot dodge it."
+      },
+      {
+        question: "What does Kira Yoshikage want most in JoJo's Bizarre Adventure?",
+        options: ["World domination", "Immortality", "A quiet life", "A girlfriend", "Hamon training"],
+        answer: 2,
+        joke: "A quiet life. He is just a regular guy who is a bit too into hands."
+      },
+      {
+        question: "Which is Thorfinn's famous line after he finally grows up in Vinland Saga?",
+        options: ["\"Believe it!\"", "\"I have no enemies.\"", "\"Plus Ultra!\"", "\"I'll be King of the Pirates!\""],
+        answer: 1,
+        joke: "I have no enemies. Peak character development, from edgy kid to ultimate chad."
       },
       {
         question: "Which studio animated Vinland Saga Season 2?",
-        options: ["Ufotable", "Bones", "Madhouse", "Wit Studio", "MAPPA"],
-        answer: 4
+        options: ["Ufotable", "Bones", "Madhouse", "MAPPA", "Wit Studio"],
+        answer: 3,
+        joke: "MAPPA. They have not slept since 2018."
       },
       {
-        question: "Who wrote and drew the manga Attack on Titan?",
-        options: ["Hajime Isayama", "Tsugumi Ohba", "Kohei Horikoshi", "Gege Akutami"],
-        answer: 0
+        question: "Complete the meme: \"I'll take a potato chip... and ___\"",
+        options: ["throw it", "share it", "EAT IT", "write your name in it"],
+        answer: 2,
+        joke: "EAT IT! Light Yagami, the only man who can make snacks dramatic."
       },
       {
-        question: "What is Monkey D. Luffy's dream in One Piece?",
-        options: ["Become Hokage", "Become the Pirate King", "Defeat all Titans", "Become the strongest swordsman", "Find the Dragon Balls"],
-        answer: 1
+        question: "What does Eren's famous \"Tatakae!\" mean in Attack on Titan?",
+        options: ["Run away", "Go to sleep", "Eat dinner", "Fight!"],
+        answer: 3,
+        joke: "Fight! Eren's answer to literally every problem."
       },
       {
-        question: "Who is Light Yagami's genius rival in Death Note?",
-        options: ["Near", "Ryuk", "L", "Mello"],
-        answer: 2
-      },
-      {
-        question: "What is MediaTok best known for?",
+        question: "What do MediaTok comment sections argue about all day?",
         options: [
-          "Fans arguing which anime or manga is the greatest media ever made",
+          "Which anime or manga is the greatest media ever made",
           "Cooking tutorials",
-          "Dance challenges to pop songs",
+          "Dance challenges",
           "Cryptocurrency advice"
         ],
-        answer: 0
+        answer: 0,
+        joke: "And somebody will always comment 'Berserk'. Every. Single. Time."
       }
     ];
-    pool.push(...baseQuestions);
 
     function startRound() {
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
@@ -255,11 +266,11 @@
 
       if (i === q.answer) {
         score++;
-        $("feedback").textContent = "✅ Correct!";
+        $("feedback").textContent = `✅ Correct! ${q.joke}`;
         $("feedback").classList.add("ok");
       } else {
         buttons[i].classList.add("wrong");
-        $("feedback").textContent = `❌ Wrong! The correct answer is: ${q.options[q.answer]}`;
+        $("feedback").textContent = `❌ Wrong! The answer is ${q.options[q.answer]}. ${q.joke}`;
         $("feedback").classList.add("bad");
       }
       $("score").textContent = `Score: ${score}`;
@@ -273,10 +284,10 @@
       $("result").classList.remove("hidden");
       $("final-score").textContent = `${score} / ${questions.length}`;
       let msg;
-      if (score === questions.length) msg = "Perfect! You are a true MediaTok legend.";
-      else if (score >= 7) msg = "Great job! You clearly spend time on MediaTok.";
-      else if (score >= 4) msg = "Not bad! Time to add a few more series to your watch list.";
-      else msg = "Touch grass... or rather, go read some manga!";
+      if (score === questions.length) msg = "Perfect! You are 100% chronically on MediaTok. Please go outside.";
+      else if (score >= 7) msg = "Great! You have definitely typed 'Berserk' in a comment section.";
+      else if (score >= 4) msg = "Mid. Subaru has died fewer times than you have lost questions.";
+      else msg = "Return by Death activated. Go read some manga and try again.";
       $("final-message").textContent = msg;
     }
 
