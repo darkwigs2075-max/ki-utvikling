@@ -3,332 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ABATOK - Anime Battle Arena Quiz</title>
+  <title>ABA Quiz - Anime Battle Arena</title>
   <style>
-    :root {
-      --bg: #000;
-      --panel: #121212;
-      --text: #fff;
-      --muted: #8a8b91;
-      --pink: #fe2c55;
-      --cyan: #25f4ee;
-      --ok: #1fd67a;
-      --bad: #ff4d5e;
-    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #eef1f7;
+      color: #1b2233;
       display: flex;
       justify-content: center;
+      padding: 24px 12px;
     }
-    .phone {
-      width: 100%;
-      max-width: 460px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: linear-gradient(180deg, #0b0b10, #000 40%);
-      border-left: 1px solid #1d1d22;
-      border-right: 1px solid #1d1d22;
+    .wrap { width: 100%; max-width: 760px; }
+    header { text-align: center; margin-bottom: 18px; }
+    header h1 { margin: 0; font-size: 2rem; }
+    header p { margin: 4px 0 0; color: #5a6480; }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(20, 30, 60, .12);
     }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px 10px;
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--cyan);
-    }
-    .tabs { color: var(--muted); font-weight: 700; font-size: .95rem; }
-    .tabs b { color: var(--text); border-bottom: 3px solid var(--text); padding-bottom: 3px; }
-    .stats { font-size: .85rem; color: var(--muted); text-align: right; }
-    .stats strong { color: var(--text); }
-    .bar { height: 3px; background: #26262c; margin: 0 16px; border-radius: 2px; overflow: hidden; }
-    .bar div { height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--pink)); transition: width .3s; }
-
-    .video {
-      margin: 14px 16px 0;
-      border-radius: 16px;
-      padding: 22px 18px 16px;
-      background: linear-gradient(160deg, #2b0b3a, #0b2a3a);
-      position: relative;
-      overflow: hidden;
-    }
-    .video .big { font-size: 3.4rem; line-height: 1; }
-    .user { margin: 10px 0 6px; font-weight: 800; }
-    .caption { font-size: 1.15rem; line-height: 1.4; font-weight: 700; margin: 0 0 10px; padding-right: 36px; }
-    .tags { color: var(--cyan); font-size: .85rem; }
-    .side {
-      position: absolute;
-      right: 12px;
-      top: 18px;
-      display: grid;
-      gap: 8px;
-      text-align: center;
-      font-size: .75rem;
-      color: #ddd;
-    }
-    .side div { font-size: 1.4rem; }
-
-    .comments-title { margin: 16px 16px 8px; color: var(--muted); font-weight: 700; font-size: .9rem; }
-    .options { display: grid; gap: 8px; margin: 0 16px; }
+    .meta { display: flex; justify-content: space-between; font-weight: 600; color: #5a6480; margin-bottom: 8px; }
+    .progress { height: 8px; background: #e3e7f1; border-radius: 99px; overflow: hidden; margin-bottom: 20px; }
+    .progress div { height: 100%; width: 0; background: #3b6cf6; transition: width .3s; }
+    h2 { margin: 0 0 18px; font-size: 1.4rem; line-height: 1.35; }
+    .options { display: grid; gap: 10px; }
+    .options.chars { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
     .option {
+      font: inherit;
+      text-align: left;
+      padding: 14px 16px;
+      border: 2px solid #d5dbea;
+      border-radius: 10px;
+      background: #fff;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .option:hover:not(:disabled) { border-color: #3b6cf6; background: #f3f6ff; }
+    .option:disabled { cursor: default; }
+    .option.correct { border-color: #1f9d55; background: #e5f7ec; }
+    .option.wrong { border-color: #d64545; background: #fdeaea; }
+    .chars .option { text-align: center; padding: 10px; }
+    .portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 8px;
+      background: #dfe5f5;
       display: flex;
       align-items: center;
-      gap: 10px;
-      text-align: left;
-      font: inherit;
-      color: var(--text);
-      background: var(--panel);
-      border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: background .15s, border-color .15s, transform .1s;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #7d8aad;
+      object-fit: cover;
+      object-position: top;
+      margin-bottom: 8px;
     }
-    .option:hover:not(:disabled) { background: #1d1d22; }
-    .option:active:not(:disabled) { transform: scale(.98); }
-    .option:focus-visible, .btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
-    .option:disabled { cursor: default; }
-    .avatar { font-size: 1.5rem; flex: none; }
-    .option.correct { background: rgba(31, 214, 122, .18); border-color: var(--ok); }
-    .option.wrong { background: rgba(255, 77, 94, .18); border-color: var(--bad); }
-
-    .feedback { min-height: 1.5em; margin: 12px 16px 0; font-weight: 800; }
-    .feedback.ok { color: var(--ok); }
-    .feedback.bad { color: var(--bad); }
+    .name { font-weight: 600; }
+    .feedback { min-height: 1.6em; margin: 16px 0 0; font-weight: 700; }
+    .feedback.ok { color: #1f9d55; }
+    .feedback.bad { color: #d64545; }
     .btn {
       font: inherit;
-      font-weight: 800;
-      color: #fff;
-      background: var(--pink);
+      font-weight: 700;
+      margin-top: 14px;
+      padding: 12px 22px;
       border: 0;
-      border-radius: 999px;
-      padding: 12px 26px;
+      border-radius: 10px;
+      background: #3b6cf6;
+      color: #fff;
       cursor: pointer;
-      margin: 12px 16px 24px;
     }
-    .btn:hover { filter: brightness(1.1); }
+    .btn:hover { background: #2d58d4; }
     .hidden { display: none; }
-
-    #result { text-align: center; padding: 28px 16px; }
-    #result .followers { font-size: 2.6rem; font-weight: 900; text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--cyan); }
-    #result .title { font-size: 1.3rem; font-weight: 800; margin: 8px 0; }
-    #result p { color: var(--muted); }
+    #result { text-align: center; }
+    .big { font-size: 3rem; font-weight: 800; margin: 8px 0; }
   </style>
 </head>
 <body>
-  <div class="phone">
-    <div class="topbar">
-      <div class="logo">ABATOK</div>
-      <div class="tabs">Following &nbsp; <b>For You</b></div>
-      <div class="stats"><span id="progress"></span><br><strong id="score"></strong></div>
-    </div>
-    <div class="bar"><div id="bar"></div></div>
+  <div class="wrap">
+    <header>
+      <h1>ABA Quiz</h1>
+      <p>How well do you know Anime Battle Arena?</p>
+    </header>
 
-    <section id="quiz">
-      <div class="video">
-        <div class="big" id="emoji"></div>
-        <div class="side"><div>❤️</div><span id="likes"></span><div>💬</div><span>4</span></div>
-        <div class="user" id="user"></div>
-        <p class="caption" id="question"></p>
-        <div class="tags" id="tags"></div>
-      </div>
-      <div class="comments-title">Pick the right comment:</div>
+    <div class="card" id="quiz">
+      <div class="meta"><span id="progress"></span><span id="score"></span></div>
+      <div class="progress"><div id="bar"></div></div>
+      <h2 id="question"></h2>
       <div class="options" id="options"></div>
       <p class="feedback" id="feedback" aria-live="polite"></p>
-      <button class="btn hidden" id="next" type="button">Swipe up ⬆</button>
-    </section>
+      <button class="btn hidden" id="next" type="button">Next</button>
+    </div>
 
-    <section id="result" class="hidden">
-      <p>Your ABATOK profile</p>
-      <div class="followers" id="followers"></div>
-      <div class="title" id="title"></div>
+    <div class="card hidden" id="result">
+      <p>Your result</p>
+      <div class="big" id="final-score"></div>
+      <h2 id="title"></h2>
       <p id="final-message"></p>
-      <button class="btn" id="restart" type="button">Queue again</button>
-    </section>
+      <button class="btn" id="restart" type="button">Play again</button>
+    </div>
   </div>
 
   <script>
     const QUESTIONS_PER_ROUND = 10;
     const questions = [];
 
-    // The question text is the joke; the first option is always the correct one (options are shuffled on load).
+    // The first option is always the correct one (options are shuffled on load).
+    // chars: true shows the options as character portraits.
     const pool = [
-      {
-        emoji: "🛡️", user: "@m1_spammer_9000", tags: "#aba #block #skillissue",
-        question: "Someone is spamming M1 combos on you for 40 seconds. Which key blocks in ABA?",
-        options: ["F", "Alt+F4", "Ctrl+Z", "Escape", "Just praying"]
-      },
-      {
-        emoji: "💨", user: "@dodge_never_pressed", tags: "#aba #dodge #lag",
-        question: "Which key do you press to dodge in ABA, right before you forget it exists and get hit anyway?",
-        options: ["Q", "Alt+Tab", "Ctrl+W", "Delete", "Skill issue"]
-      },
-      {
-        emoji: "⚡", user: "@transform_protagonist", tags: "#aba #transform #screaming",
-        question: "Which key transforms you in ABA so you can scream like a main character?",
-        options: ["G", "Caps Lock", "Alt+F4", "Escape", "Ctrl+Z"]
-      },
-      {
-        emoji: "🏃", user: "@run_away_after_starting_it", tags: "#aba #sprint #cowardice",
-        question: "Which key makes you sprint in ABA so you can run away from the fight you started?",
-        options: ["Shift", "Tab", "Caps Lock", "Enter", "Alt"]
-      },
-      {
-        emoji: "🔢", user: "@forgot_my_moveset", tags: "#aba #specials #movesets",
-        question: "Keys 1 to 4 are your special moves, and you will forget half of them mid-fight. How many specials is that?",
-        options: ["Four", "Forty", "One", "Zero", "Seven"]
-      },
-      {
-        emoji: "🦘", user: "@air_combo_enjoyer", tags: "#aba #aerial #combo",
-        question: "You press Space and Mouse1 together and launch an attack from the air. What is it called?",
-        options: ["An aerial attack", "A dance", "A tax return", "A lag spike", "A prayer"]
-      },
-      {
-        emoji: "🎮", user: "@roblox_main_character", tags: "#aba #roblox #lobby",
-        question: "ABA is where grown adults argue about movesets. On which platform does it live?",
-        options: ["Roblox", "Minecraft", "Fortnite", "Nintendo Switch only", "Your fridge"]
-      },
-      {
-        emoji: "🐶", user: "@dogs_studios_hr", tags: "#aba #developer #updates",
-        question: "ABA has more updates than your sleep schedule. Which studio develops it?",
-        options: ["Dogs Studios: South", "Cats Studios: North", "Birds Inc.", "Hamster Games", "Fish Corp."]
-      },
-      {
-        emoji: "📈", user: "@same_main_every_game", tags: "#aba #characters #125plus",
-        question: "ABA has a huge roster and you still pick the same character every single game. Roughly how many characters are there?",
-        options: ["Over 125", "Exactly 3", "About 12", "Over 5,000"]
-      },
-      {
-        emoji: "🔥", user: "@ranked_lobby_trauma", tags: "#aba #ranked #sweating",
-        question: "You enter Ranked mode in ABA. What happens to your calm, friendly personality?",
-        options: ["It disappears instantly", "It gets stronger", "Nothing, you are a monk", "It transforms into a golden retriever"]
-      },
-      {
-        emoji: "📶", user: "@its_just_lag", tags: "#aba #lag #copium",
-        question: "After losing a 1v1, someone in chat types 'it was just lag'. What does that actually mean?",
-        options: ["They lost", "Their Wi-Fi is truly cursed", "The server is on fire", "Mercury is in retrograde"]
-      },
-      {
-        emoji: "🕶️", user: "@honored_one_main", tags: "#aba #gojo #jjk",
-        question: "Gojo shows up in ABA with a blindfold and way too much confidence. Which anime is he from?",
-        options: ["Jujutsu Kaisen", "Naruto", "Bleach", "Black Clover", "Hunter x Hunter"]
-      },
-      {
-        emoji: "👹", user: "@sukuna_roommate", tags: "#aba #yuji #jjk",
-        question: "Yuji Itadori swallowed something very dangerous and now has a roommate. Who is it?",
-        options: ["Sukuna", "Gojo", "Mahito", "Geto", "Toji"]
-      },
-      {
-        emoji: "🥋", user: "@bald_since_forever", tags: "#aba #krillin #dragonball",
-        question: "Krillin has been bald since forever and ABA kept the tradition. Which anime is he from?",
-        options: ["Dragon Ball", "One Piece", "Bleach", "Naruto", "JoJo"]
-      },
-      {
-        emoji: "🕐", user: "@copy_ninja_late_again", tags: "#aba #kakashi #naruto",
-        question: "Kakashi copied a thousand jutsu and still arrives late to every single fight. Which anime is he from?",
-        options: ["Naruto", "Bleach", "One Piece", "Dragon Ball", "Black Clover"]
-      },
-      {
-        emoji: "🏴‍☠️", user: "@one_arm_shanks", tags: "#aba #shanks #onepiece",
-        question: "Shanks is a One Piece legend who is also missing a body part. Which one?",
-        options: ["His left arm", "His right leg", "Both eyebrows", "His hat", "His sense of humor"]
-      },
-      {
-        emoji: "🔪", user: "@room_surgeon", tags: "#aba #law #onepiece",
-        question: "Which pirate surgeon creates a 'Room' and cuts you into pieces without you noticing?",
-        options: ["Trafalgar Law", "Luffy", "Zoro", "Sanji", "Usopp"]
-      },
-      {
-        emoji: "🍬", user: "@big_mom_snacks", tags: "#aba #bigmom #onepiece",
-        question: "Big Mom will eat your whole team and then ask where the dessert is. Which anime is she from?",
-        options: ["One Piece", "Naruto", "Bleach", "JoJo", "Dragon Ball"]
-      },
-      {
-        emoji: "💥", user: "@air_cracker", tags: "#aba #whitebeard #quakequake",
-        question: "Whitebeard punches the air and the air breaks. What is his power called?",
-        options: ["The Quake-Quake Fruit", "The Rubber Fruit", "The Flame-Flame Fruit", "The Ice-Ice Fruit", "Strong vibes only"]
-      },
-      {
-        emoji: "⚔️", user: "@bankai_haircut", tags: "#aba #ichigo #bleach",
-        question: "Ichigo has a Bankai and a very angry hairstyle. Which anime is he from?",
-        options: ["Bleach", "Naruto", "One Piece", "Black Clover", "Jujutsu Kaisen"]
-      },
-      {
-        emoji: "🧲", user: "@vector_enjoyer", tags: "#aba #accelerator #index",
-        question: "Accelerator redirects anything that touches him, including your feelings. What is his power?",
-        options: ["Vector manipulation", "Water bending", "Sneezing", "Hamon", "Nen"]
-      },
-      {
-        emoji: "😤", user: "@no_magic_just_screaming", tags: "#aba #asta #blackclover",
-        question: "Asta has zero magic in a world full of magic and still wins by screaming. Which anime is he from?",
-        options: ["Black Clover", "Naruto", "Bleach", "Fairy Tail", "Dr. Stone"]
-      },
-      {
-        emoji: "🪢", user: "@stone_free_gang", tags: "#aba #jolyne #jojo",
-        question: "Jolyne Cujoh fights with string powers and impeccable hairdresser energy. What is her Stand called?",
-        options: ["Stone Free", "Star Platinum", "The World", "Killer Queen", "Gold Experience"]
-      },
-      {
-        emoji: "🟢", user: "@humble_c_tier_dad", tags: "#aba #ctier #piccolo",
-        question: "Humble C tier: this green teacher is basically the dad of the whole show, yet tier lists still bury him in C tier. Who is he?",
-        options: ["Piccolo", "Frieza", "Beerus", "Broly", "Krillin"]
-      },
-      {
-        emoji: "⚡", user: "@humble_c_tier_god", tags: "#aba #ctier #enel #onepiece",
-        question: "Humble C tier: this man calls himself a god, lives in the clouds and still sits in C tier. Who is he?",
-        options: ["Enel", "Shanks", "Big Mom", "Whitebeard"]
-      },
-      {
-        emoji: "🏜️", user: "@humble_c_tier_sand", tags: "#aba #ctier #gaara #naruto",
-        question: "Humble C tier: which tired-looking Naruto character controls sand and has the best dark circles in anime?",
-        options: ["Gaara", "Madara", "Pain", "Tobi", "Zabuza"]
-      },
-      {
-        emoji: "📦", user: "@humble_c_tier_box", tags: "#aba #ctier #tanjiro",
-        question: "Humble C tier: Tanjiro Kamado has the kindest heart in anime. What does he carry on his back like a delivery guy?",
-        options: ["His sister Nezuko in a box", "A laptop", "A pizza", "Groceries", "A very tired cat"]
-      },
-      {
-        emoji: "😱", user: "@humble_c_tier_joseph", tags: "#aba #ctier #joseph #jojo",
-        question: "Humble C tier: Joseph Joestar from Stardust Crusaders is shocked at least 40 times per episode. What does he scream?",
-        options: ["\"Oh my god!\"", "\"Believe it!\"", "\"Plus Ultra!\"", "\"Yare yare daze.\"", "\"Skibidi.\""]
-      },
-      {
-        emoji: "📉", user: "@humble_z_tier_gang", tags: "#aba #ztier #yoruichi",
-        question: "Who's the humble Z tier?",
-        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"]
-      },
-      {
-        emoji: "🐈", user: "@z_tier_lobby", tags: "#aba #ztier #yoruichi #lobby",
-        question: "Might Guy, Akainu, Lancer, Bam and Yoruichi all queue up in the same lobby. Which one is the humble Z tier?",
-        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"]
-      },
-      {
-        emoji: "🗂️", user: "@tier_list_police", tags: "#aba #tierlist #ztier",
-        question: "The tier list says SS, S, A, B, C... and then comes the humble Z tier. Who is the only one standing there?",
-        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"]
-      }
+      { question: "Who's the humble Z tier?", chars: true,
+        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"] },
+      { question: "Might Guy, Akainu, Lancer, Bam and Yoruichi all queue up in the same lobby. Which one is the humble Z tier?", chars: true,
+        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"] },
+      { question: "The tier list says SS, S, A, B, C... and then comes the humble Z tier. Who is the only one standing there?", chars: true,
+        options: ["Yoruichi", "Might Guy", "Akainu", "Lancer", "Bam"] },
+      { question: "Who's the humble C tier: the green teacher who is basically the dad of the whole show?", chars: true,
+        options: ["Piccolo", "Gaara", "Enel", "Trafalgar Law", "Tanjiro Kamado"] },
+      { question: "Humble C tier: which man calls himself a god and lives in the clouds?", chars: true,
+        options: ["Enel", "Piccolo", "Gaara", "Trafalgar Law", "Sukuna"] },
+      { question: "Humble C tier: which tired-looking sand user has the best dark circles in anime?", chars: true,
+        options: ["Gaara", "Enel", "Piccolo", "Tanjiro Kamado", "Sukuna"] },
+      { question: "Which pirate surgeon creates a 'Room' and cuts you into pieces without you noticing?", chars: true,
+        options: ["Trafalgar Law", "Enel", "Gaara", "Piccolo", "Sukuna"] },
+      { question: "Yuji Itadori swallowed something very dangerous and now has a roommate. Who is it?", chars: true,
+        options: ["Sukuna", "Gaara", "Enel", "Trafalgar Law", "Piccolo"] },
+      { question: "Someone is spamming M1 combos on you for 40 seconds. Which key blocks in ABA?",
+        options: ["F", "Alt+F4", "Ctrl+Z", "Escape", "Just praying"] },
+      { question: "Which key do you press to dodge in ABA, right before you forget it exists and get hit anyway?",
+        options: ["Q", "Alt+Tab", "Ctrl+W", "Delete", "Skill issue"] },
+      { question: "Which key transforms you in ABA so you can scream like a main character?",
+        options: ["G", "Caps Lock", "Alt+F4", "Escape", "Ctrl+Z"] },
+      { question: "Which key makes you sprint in ABA so you can run away from the fight you started?",
+        options: ["Shift", "Tab", "Caps Lock", "Enter", "Alt"] },
+      { question: "Keys 1 to 4 are your special moves, and you will forget half of them mid-fight. How many specials is that?",
+        options: ["Four", "Forty", "One", "Zero", "Seven"] },
+      { question: "You press Space and Mouse1 together and launch an attack from the air. What is it called?",
+        options: ["An aerial attack", "A dance", "A tax return", "A lag spike", "A prayer"] },
+      { question: "ABA is where grown adults argue about movesets. On which platform does it live?",
+        options: ["Roblox", "Minecraft", "Fortnite", "Nintendo Switch only", "Your fridge"] },
+      { question: "ABA has more updates than your sleep schedule. Which studio develops it?",
+        options: ["Dogs Studios: South", "Cats Studios: North", "Birds Inc.", "Hamster Games", "Fish Corp."] },
+      { question: "ABA has a huge roster and you still pick the same character every single game. Roughly how many characters are there?",
+        options: ["Over 125", "Exactly 3", "About 12", "Over 5,000"] },
+      { question: "You enter Ranked mode in ABA. What happens to your calm, friendly personality?",
+        options: ["It disappears instantly", "It gets stronger", "Nothing, you are a monk", "It transforms into a golden retriever"] },
+      { question: "After losing a 1v1, someone in chat types 'it was just lag'. What does that actually mean?",
+        options: ["They lost", "Their Wi-Fi is truly cursed", "The server is on fire", "Mercury is in retrograde"] },
+      { question: "Gojo shows up in ABA with a blindfold and way too much confidence. Which anime is he from?",
+        options: ["Jujutsu Kaisen", "Naruto", "Bleach", "Black Clover", "Hunter x Hunter"] },
+      { question: "Krillin has been bald since forever and ABA kept the tradition. Which anime is he from?",
+        options: ["Dragon Ball", "One Piece", "Bleach", "Naruto", "JoJo"] },
+      { question: "Kakashi copied a thousand jutsu and still arrives late to every single fight. Which anime is he from?",
+        options: ["Naruto", "Bleach", "One Piece", "Dragon Ball", "Black Clover"] },
+      { question: "Shanks is a One Piece legend who is also missing a body part. Which one?",
+        options: ["His left arm", "His right leg", "Both eyebrows", "His hat", "His sense of humor"] },
+      { question: "Big Mom will eat your whole team and then ask where the dessert is. Which anime is she from?",
+        options: ["One Piece", "Naruto", "Bleach", "JoJo", "Dragon Ball"] },
+      { question: "Whitebeard punches the air and the air breaks. What is his power called?",
+        options: ["The Quake-Quake Fruit", "The Rubber Fruit", "The Flame-Flame Fruit", "The Ice-Ice Fruit", "Strong vibes only"] },
+      { question: "Ichigo has a Bankai and a very angry hairstyle. Which anime is he from?",
+        options: ["Bleach", "Naruto", "One Piece", "Black Clover", "Jujutsu Kaisen"] },
+      { question: "Accelerator redirects anything that touches him, including your feelings. What is his power?",
+        options: ["Vector manipulation", "Water bending", "Sneezing", "Hamon", "Nen"] },
+      { question: "Asta has zero magic in a world full of magic and still wins by screaming. Which anime is he from?",
+        options: ["Black Clover", "Naruto", "Bleach", "Fairy Tail", "Dr. Stone"] },
+      { question: "Jolyne Cujoh fights with string powers and impeccable hairdresser energy. What is her Stand called?",
+        options: ["Stone Free", "Star Platinum", "The World", "Killer Queen", "Gold Experience"] },
+      { question: "Joseph Joestar from Stardust Crusaders is shocked at least 40 times per episode. What does he scream?",
+        options: ["\"Oh my god!\"", "\"Believe it!\"", "\"Plus Ultra!\"", "\"Yare yare daze.\"", "\"Skibidi.\""] }
     ];
 
     const finalQuestion = {
-      emoji: "👑", user: "@abatok_official", tags: "#bestcharacter #everyoneiscorrect #noarguing",
-      question: "FINAL BOSS: who is the best character in ABA?",
+      question: "FINAL BOSS: who is the best character in ABA?", chars: true,
       options: ["Gojo", "Kakashi", "Ichigo", "Shanks", "Yuji Itadori"],
       allCorrect: true
     };
 
-    const avatars = ["🦊", "🐱", "🐸", "🐼", "🦄"];
-    const SEEN_KEY = "abatok-seen";
+    // Search terms used to look up portraits on AniList when the display name is ambiguous.
+    const SEARCH = {
+      "Yoruichi": "Yoruichi Shihouin", "Might Guy": "Might Guy", "Akainu": "Sakazuki",
+      "Lancer": "Cu Chulainn", "Bam": "Twenty-Fifth Bam", "Gojo": "Satoru Gojo",
+      "Kakashi": "Kakashi Hatake", "Ichigo": "Ichigo Kurosaki", "Shanks": "Shanks",
+      "Yuji Itadori": "Yuji Itadori", "Tanjiro Kamado": "Tanjiro Kamado"
+    };
+    const IMG_KEY = "aba-images";
+    let images = {};
+    try { images = JSON.parse(localStorage.getItem(IMG_KEY)) || {}; } catch (e) {}
+
+    const SEEN_KEY = "aba-seen";
     const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
     const $ = (id) => document.getElementById(id);
     let current = 0;
@@ -355,41 +222,81 @@
       return picked.map(prepare);
     }
 
+    async function loadImages(names) {
+      const missing = names.filter((n) => !images[n]);
+      if (!missing.length) return;
+      const body = "{" + missing.map((n, i) =>
+        `a${i}:Character(search:${JSON.stringify(SEARCH[n] || n)}){image{large}}`).join(" ") + "}";
+      try {
+        const res = await fetch("https://graphql.anilist.co", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: body })
+        });
+        const data = (await res.json()).data || {};
+        missing.forEach((n, i) => {
+          const url = data[`a${i}`] && data[`a${i}`].image && data[`a${i}`].image.large;
+          if (url) images[n] = url;
+        });
+        localStorage.setItem(IMG_KEY, JSON.stringify(images));
+      } catch (e) {}
+    }
+
+    function portrait(name) {
+      if (images[name]) {
+        const img = document.createElement("img");
+        img.className = "portrait";
+        img.src = images[name];
+        img.alt = name;
+        img.referrerPolicy = "no-referrer";
+        return img;
+      }
+      const div = document.createElement("div");
+      div.className = "portrait";
+      div.textContent = name[0];
+      return div;
+    }
+
     function startRound() {
       questions.length = 0;
-      questions.push(...pickQuestions(QUESTIONS_PER_ROUND - 1), { ...finalQuestion });
+      questions.push(...pickQuestions(QUESTIONS_PER_ROUND - 1), prepare(finalQuestion));
+      questions[questions.length - 1].answer = 0;
       current = 0;
       score = 0;
       showQuestion();
     }
 
-    function showQuestion() {
+    async function showQuestion() {
       const q = questions[current];
       answered = false;
-      $("progress").textContent = `Video ${current + 1}/${questions.length}`;
-      $("score").textContent = `${score * 100} followers`;
+      $("progress").textContent = `Question ${current + 1}/${questions.length}`;
+      $("score").textContent = `Score: ${score}`;
       $("bar").style.width = `${(current / questions.length) * 100}%`;
-      $("emoji").textContent = q.emoji;
-      $("user").textContent = q.user;
       $("question").textContent = q.question;
-      $("tags").textContent = q.tags;
-      $("likes").textContent = `${(Math.floor(Math.random() * 900) + 100) / 10}K`;
       $("feedback").textContent = "";
       $("feedback").className = "feedback";
       $("next").classList.add("hidden");
+      if (q.chars) await loadImages(q.options);
+      if (questions[current] !== q) return;
+      renderOptions(q);
+    }
 
+    function renderOptions(q) {
       const box = $("options");
       box.innerHTML = "";
+      box.className = q.chars ? "options chars" : "options";
       q.options.forEach((text, i) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "option";
-        const avatar = document.createElement("span");
-        avatar.className = "avatar";
-        avatar.textContent = avatars[i % avatars.length];
-        const label = document.createElement("span");
-        label.textContent = text;
-        btn.append(avatar, label);
+        if (q.chars) {
+          const name = document.createElement("div");
+          name.className = "name";
+          name.textContent = text;
+          btn.append(portrait(text), name);
+        } else {
+          btn.textContent = text;
+        }
         btn.addEventListener("click", () => choose(i));
         box.appendChild(btn);
       });
@@ -405,13 +312,13 @@
       if (q.allCorrect) {
         for (const b of buttons) b.classList.add("correct");
         score++;
-        $("feedback").textContent = "✅ Every answer is correct. Do not argue in the comments.";
+        $("feedback").textContent = "✅ Every answer is correct. Do not argue.";
         $("feedback").classList.add("ok");
       } else {
         buttons[q.answer].classList.add("correct");
         if (i === q.answer) {
           score++;
-          $("feedback").textContent = "✅ Correct! +100 followers";
+          $("feedback").textContent = "✅ Correct!";
           $("feedback").classList.add("ok");
         } else {
           buttons[i].classList.add("wrong");
@@ -419,8 +326,8 @@
           $("feedback").classList.add("bad");
         }
       }
-      $("score").textContent = `${score * 100} followers`;
-      $("next").textContent = current === questions.length - 1 ? "See my profile" : "Swipe up ⬆";
+      $("score").textContent = `Score: ${score}`;
+      $("next").textContent = current === questions.length - 1 ? "See result" : "Next question";
       $("next").classList.remove("hidden");
       $("next").focus();
     }
@@ -428,11 +335,10 @@
     function showResult() {
       $("quiz").classList.add("hidden");
       $("result").classList.remove("hidden");
-      $("bar").style.width = "100%";
-      $("followers").textContent = `${score * 100} followers`;
+      $("final-score").textContent = `${score} / ${questions.length}`;
       let title, msg;
       if (score === questions.length) {
-        title = "Ranked Legend ✔️";
+        title = "Ranked Legend";
         msg = "Perfect. You are chronically online in ABA. Please go outside.";
       } else if (score >= 7) {
         title = "Certified Lobby Warrior";
