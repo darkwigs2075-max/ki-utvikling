@@ -219,10 +219,17 @@
       }
     ];
 
+    const finalQuestion = {
+      question: "Final question: who is the best written character of them all?",
+      options: ["Guts (Berserk)", "Subaru Natsuki (Re:Zero)", "Thorfinn (Vinland Saga)", "Aladdin (Magi)", "Rudeus Greyrat (Mushoku Tensei)"],
+      allCorrect: true,
+      joke: "Every answer is correct. Do not argue in the comments."
+    };
+
     function startRound() {
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
       questions.length = 0;
-      questions.push(...shuffled.slice(0, QUESTIONS_PER_ROUND));
+      questions.push(...shuffled.slice(0, QUESTIONS_PER_ROUND - 1), finalQuestion);
       current = 0;
       score = 0;
       showQuestion();
@@ -262,6 +269,18 @@
       const q = questions[current];
       const buttons = $("options").children;
       for (const b of buttons) b.disabled = true;
+
+      if (q.allCorrect) {
+        for (const b of buttons) b.classList.add("correct");
+        score++;
+        $("feedback").textContent = `✅ Correct! ${q.joke}`;
+        $("feedback").classList.add("ok");
+        $("score").textContent = `Score: ${score}`;
+        $("next").textContent = "See result";
+        $("next").classList.remove("hidden");
+        $("next").focus();
+        return;
+      }
       buttons[q.answer].classList.add("correct");
 
       if (i === q.answer) {
