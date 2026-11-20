@@ -4,3 +4,6 @@ my legacy my gambit
 i am the destroyer of 
 carocan!!!!
 BRILLIAANTT
+
+git log --oneline viser en liste over alle lagrede versjoner (commits) med den nyeste øverst, 
+inkludert en unik kode og meldinger for hver lagring.

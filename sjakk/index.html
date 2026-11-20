@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sjakk</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Sjakk</h1>
+    <p id="status" role="status" aria-live="polite"></p>
+    <p id="hint-text" role="status" aria-live="polite"></p>
+    <div class="layout">
+      <div id="board" role="grid" aria-label="Sjakkbrett"></div>
+      <aside>
+        <h2>Trekk</h2>
+        <ol id="moves"></ol>
+        <div class="actions">
+          <button id="hint" type="button">Beste trekk</button>
+          <button id="undo" type="button">Angre</button>
+          <button id="flip" type="button">Snu brettet</button>
+          <button id="restart" type="button">Nytt parti</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="promo" aria-label="Velg brikke">
+    <p>Forvandle bonden til:</p>
+    <div id="promo-choices"></div>
+  </dialog>
+  <script src="chess.js"></script>
+  <script src="ai.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
